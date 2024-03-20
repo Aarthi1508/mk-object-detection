@@ -1,0 +1,84 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Detected Image Page</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-content">
+            <img src="{% static 'images/tamu-icon.png' %}" alt="Icon Image" width="30" height="30">
+            <div>
+                <div>Texas A&M University</div>
+                <div>Department of Construction Science</div>
+            </div>
+            <div class="research-group">
+                <a href="https://www.hamresearchgroup.com/" style="color: white; text-decoration: none; font-weight: bold;">HAM Research Group @ TAMU</a>
+            </div>        
+        </div>
+    </header>
+
+    <div class="detected-image-container">
+
+        <div class="image-holder-container">
+            <div id="loader">
+                <i class="fas fa-spinner fa-spin fa-3x"></i>
+                <!-- Adjust size and icon as needed -->
+            </div>
+            <h3>Detected Image</h3>
+
+            <div class="img-container">
+
+                {% if latest_image_url %}
+                    <img src="{{ latest_image_url }}" alt="Latest Detected Image" />
+                {% else %}
+                    <p>No latest image available.</p>
+                {% endif %}
+
+                <!-- Add additional information here if needed -->
+
+                <div class="button-container">
+                    <button onclick="window.location.href='{% url 'image_upload' %}'" class="button">Upload another
+                        image</button>
+                    <button onclick="openPopup()">View MongoDB Record</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        function openPopup() {
+            // Define the dimensions of the popup window
+            var width = 600;
+            var height = 600;
+
+            // Calculate the left and top positions to center the popup
+            var left = (window.screen.width - width) / 2;
+            var top = (window.screen.height - height) / 2;
+
+            // Open the pop-up window with the specified URL and position
+            var imageDetailUrl = "{% url 'image_details_popup' %}";
+            var popup = window.open(imageDetailUrl, "Popup", "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top);
+
+            if (popup) {
+                // Focus the pop-up window if it's already open
+                popup.focus();
+            } else {
+                // Handle if the pop-up blocker prevents opening the window
+                alert("Please allow pop-ups to view MongoDB record.");
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>

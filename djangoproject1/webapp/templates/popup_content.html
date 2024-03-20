@@ -1,0 +1,126 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Object Detection Results</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+
+    <style>
+        /* Add border styles to table, th, and td */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #500000; /* Texas A&M maroon */
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #ffffff; /* White */
+            color: #500000; /* Texas A&M maroon */
+        }
+        .nested-table {
+            margin-left: 20px; /* Add margin to indent nested tables */
+            width: 90%;
+        }
+        body {
+            color: #000000; /* Black */
+            font-family: Arial, sans-serif;
+        }
+
+        
+        h3 {
+            font-family: 'Arial', sans-serif;
+            font-size: 20px; /* Adjust font size as needed */
+            font-weight: bold;
+            color: #500000; /* Texas A&M Maroon */
+            text-transform: uppercase; /* Convert text to uppercase */
+            letter-spacing: 2px; /* Adjust letter spacing */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Add a shadow effect */
+            margin-top: 20px; /* Adjust top margin as needed */
+            padding: 10px; /* Add padding for visual appeal */
+            transition: all 0.3s ease; /* Add smooth transition effect */
+        }
+
+        h3:hover {
+            transform: translateY(-2px); /* Move the heading up slightly on hover */
+            color: #ffffff; /* Change font color to white on hover */
+        }
+
+   
+    </style>
+
+</head>
+<body style="background: #ffffff;">
+    <header>
+        <div class="header-content">
+            <img src="{% static 'images/tamu-icon.png' %}" alt="Icon Image" width="30" height="30">
+            <div>
+                <div>Texas A&M University</div>
+                <div>Department of Construction Science</div>
+            </div>
+            <div class="research-group">
+                <a href="https://www.hamresearchgroup.com/" style="color: white; text-decoration: none; font-weight: bold;">HAM Research Group @ TAMU</a>
+            </div>        
+        </div>
+    </header>
+    <div class="container-popup">
+        <h3 style="color: #500000;">Detection Results</h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Field</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if latest_mongo_db_record %}
+                {% for key, value in latest_mongo_db_record.items %}
+                    <tr>
+                        <td>{{ key }}</td>
+                        <td>
+                            {% if key == "detection_results" %}
+                                {% for detection_result in value %}
+                                    <table class="nested-table">
+                                        {% for detection_key, detection_value in detection_result.items %}
+                                            <tr>
+                                                <td>{{ detection_key }}</td>
+                                                <td>
+                                                    {% if detection_key == "details" %}
+                                                    <table class="nested-table">
+                                                            {% for detail in detection_value %}
+                                                                <tr>
+                                                                    <td>Occurrence: {{ detail.occurrence }}</td>
+                                                                    <td>Bbox Coordinates: {{ detail.bbox_coordinates }}</td>
+                                                                    <td>Confidence Level: {{ detail.confidence_level }}</td>
+                                                                </tr>
+                                                            {% endfor %}
+                                                        </table>
+                                                    {% else %}
+                                                        {{ detection_value }}
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </table>
+                                {% endfor %}
+                            {% else %}
+                                {{ value }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="2">No record available.</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

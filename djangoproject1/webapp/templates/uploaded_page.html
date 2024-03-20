@@ -1,0 +1,92 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Uploaded Page</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-content">
+            <img src="{% static 'images/tamu-icon.png' %}" alt="Icon Image" width="30" height="30">
+            <div>
+                <div>Texas A&M University</div>
+                <div>Department of Construction Science</div>
+            </div>
+            <div class="research-group">
+                <a href="https://www.hamresearchgroup.com/" style="color: white; text-decoration: none; font-weight: bold;">HAM Research Group @ TAMU</a>
+            </div>        
+        </div>
+    </header>
+    <div class="image-holder-container">
+        <div id="loader">
+            <i class="fas fa-spinner fa-spin fa-3x"></i>
+            <!-- Adjust size and icon as needed -->
+        </div>
+        <h3>Uploaded Image</h3>
+
+        <div class="img-container">
+
+            {% if uploaded_image %}
+            <img src="{{ uploaded_image.image.url }}" alt="Uploaded Image">
+            {% else %}
+            <p>No image available.</p>
+            {% endif %}
+
+            <!-- Add additional information here if needed -->
+
+            <div class="button-container">
+                <button onclick="window.location.href='{% url 'image_upload' %}'" class="button">Upload another
+                    image</button>
+                    <button onclick="detectObject()" class="button">Detect Object</button>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var resultsAppended = false; // To ensure the button is appended only once
+        
+        function detectObject() {
+            $('#loader').show(); // Show loader icon
+            var url = "{% url 'detect_object' %}"; // Get the URL from Django's URL configuration
+            console.log("Request URL:", url); // This should output the resolved URL path
+    
+            $.ajax({
+                url: url,
+                type: "GET",
+                success: function (response) {
+                    $('#loader').hide(); // Hide loader icon on success
+                    alert(response.message); // Alert with the server's response message
+        
+                    if (response.status === 'success' && !resultsAppended) {
+                        // Append "View Results" button only if it's not already appended
+                        var viewResultsButton = $('<button id="viewResults">').text('View Results').addClass('button');
+                        $('.button-container').append(viewResultsButton); // Adjust the selector as per your HTML structure for consistency
+                        resultsAppended = true; // Update flag to avoid appending the button multiple times
+        
+                        // Event listener for the newly added "View Results" button
+                        $('#viewResults').click(function () {
+                            window.location.href = "{% url 'detected_image_page' %}"; // Redirect to detected_image_page
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    $('#loader').hide(); // Hide loader icon on error
+                    var errorMsg = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : error;
+                    alert("Error occurred: " + errorMsg);
+                }
+            });
+        }
+    </script>
+    
+
+</body>
+
+</html>

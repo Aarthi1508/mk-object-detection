@@ -1,0 +1,69 @@
+<!-- templates/image_upload.html -->
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Image Upload</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+</head>
+
+<body>
+    <header>
+        <div class="header-content">
+            <img src="{% static 'images/tamu-icon.png' %}" alt="Icon Image" width="30" height="30">
+            <div>
+                <div>Texas A&M University</div>
+                <div>Department of Construction Science</div>
+            </div>
+            <div class="research-group">
+                <a href="https://www.hamresearchgroup.com/" style="color: white; text-decoration: none; font-weight: bold;">HAM Research Group @ TAMU</a>
+            </div>        
+        </div>
+    </header>
+
+    <div class="container">
+        <h3>AWS Education Material</h3>
+
+        <div class="form-container">
+
+            <form id="imageUploadForm" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <br>
+                <label for="id_image">Upload Image:</label>
+                {{ form.image }}
+                <br>
+                <button type="button" onclick="uploadToS3()">Upload</button>
+            </form>
+
+        </div>
+
+            <br>
+
+            <script>
+                function uploadToS3() {
+                    var formData = new FormData($('#imageUploadForm')[0]);
+
+                    $.ajax({
+                        url: '../upload-to-s3/',  // Adjust the URL to your Django view for handling S3 upload
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function (data) {
+                            alert('Image uploaded successfully!');
+                            window.location.href = '{% url "uploaded_page" %}'; // Redirect to uploaded_page
+
+                        },
+                        error: function (error) {
+                            alert('Error uploading image. Please try again.');
+                        }
+                    });
+                }
+            </script>
+</body>
+
+</html>

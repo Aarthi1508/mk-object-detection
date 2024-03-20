@@ -1,0 +1,143 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background: rgba(0, 0, 0, 1) url('/static/images/3D_bg_3.jpg'); /* Apply transparency to the background image */
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin: 0;
+    padding: 0;
+}
+
+
+header {
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 20px 0;
+    color: #ffffff;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+}
+
+header img {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+}
+
+.header-content div {
+    display: flex;
+    flex-direction: column;
+}
+
+.header-content .research-group {
+    margin-left: auto; /* Pushes the research group section to the right */
+    margin-right: 15px; /* Pushes the research group section to the right */
+}
+
+.container {
+    /* background: rgba(80, 0, 0, 0.4); */
+    width: 60%;
+    max-width: 800px;
+    margin: 50px auto;
+    border-radius: 20px;
+    /* box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); */
+    padding: 40px;
+    text-align: center;
+}
+
+.container-popup {
+    width: 70%;
+    max-width: 1800px;
+    margin: 50px auto;
+    border-radius: 20px;
+    /* box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); */
+    padding: 40px;
+    text-align: center;
+}
+
+.form-container {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h3 {
+    font-family: 'Arial', sans-serif;
+    font-size: 20px; /* Adjust font size as needed */
+    font-weight: bold;
+    color: #ffffff; /* Texas A&M Maroon */
+    text-transform: uppercase; /* Convert text to uppercase */
+    letter-spacing: 2px; /* Adjust letter spacing */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Add a shadow effect */
+    margin-top: 20px; /* Adjust top margin as needed */
+    padding: 10px; /* Add padding for visual appeal */
+    transition: all 0.3s ease; /* Add smooth transition effect */
+}
+
+h3:hover {
+    transform: translateY(-2px); /* Move the heading up slightly on hover */
+    color: #500000; /* Change font color to white on hover */
+}
+
+
+form {
+    text-align: left;
+}
+
+button {
+    background-color: #500000;
+    color: #ffffff;
+    padding: 12px 24px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #330000;
+}
+
+.img-container {
+    /* background: rgba(255, 255, 255, 0.9); */
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    margin: auto;
+    max-width: 75%;
+    /* box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); */
+}
+
+.image-holder-container {
+    /* background: rgba(80, 0, 0, 0.4); */
+    border-radius: 20px;
+    padding: 40px;
+    margin: 50px auto;
+    /* box-shadow: 0 0 100px rgba(0, 0, 0, 0.1); */
+    text-align: center;
+    width: 90%; 
+}
+
+#loader {
+    position: relative;
+    margin-top: 20px;
+    margin-bottom: 0px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999; /* Ensure loader is on top of other content */
+    display: none; /* Initially hidden */
+}
+.detected-image-container {
+    display: flex; /* Use flexbox for layout */
+    justify-content: space-between; /* Distribute items along the main axis */
+    padding: 20px; /* Add some padding */
+}
+
+.mongo-record-container {
+    flex: 1; /* Let the MongoDB record container take up half of the space */
+    padding: 20px; /* Add some padding */
+}
