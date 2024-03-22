@@ -18,6 +18,7 @@ import pymongo
 from PIL import Image, ImageDraw
 import io
 from datetime import datetime
+import pytz
 
 # Load environment variables from .env
 load_dotenv()
@@ -137,6 +138,8 @@ def get_latest_object_in_folder():
 
     # List all objects in the bucket with the given prefix (folder)
     response = s3.list_objects_v2(Bucket=aws_bucket_name, Prefix = aws_s3_upload_folder)
+
+    print("response", response)
    
 
     # Extract the objects within the folder
@@ -232,9 +235,12 @@ def reformat_detection_results(detection_results):
 
 def save_detection_results_and_image_info_to_mongodb(image_key, detection_results, processed_image_key):
     reformatted_results = reformat_detection_results(detection_results)
+    cst_timezone = pytz.timezone('America/Chicago')
+    cst_timestamp = datetime.now(cst_timezone)
+    print(cst_timestamp)
     document = {
         "image_id": img_id,  # Placeholder, replace with actual ID if available
-        "timestamp": datetime.now(),
+        "timestamp": cst_timestamp,
         "detection_results": reformatted_results,
     }
     collection.insert_one(document)
@@ -255,7 +261,8 @@ def detect_object(request):
             # Add bounding boxes to the image
             image_with_boxes = add_bounding_boxes_to_image(image, detection_result)
             # Construct new key for the processed image
-            processed_image_key = aws_s3_upload_folder + latest_image_key.split('/')[-1]
+            processed_image_key = aws_s3_detected_folder + '/' + latest_image_key.split('/')[-1] 
+            print("processed_image_key", processed_image_key)
             # Upload the modified image back to S3 in a different folder
             upload_image_to_s3(image_with_boxes, aws_bucket_name, processed_image_key)
             # Save detection results and processed image info to MongoDB
