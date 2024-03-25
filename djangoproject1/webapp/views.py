@@ -60,7 +60,7 @@ def image_upload(request):
         form = ImageUploadForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('image_list')
+            return irect('image_list')
     else:
         form = ImageUploadForm()
     return render(request, 'image_upload.html', {'form': form})
@@ -79,7 +79,7 @@ def upload_to_s3(request):
 
             if upload_result:
                 # return JsonResponse({'status': 'success'})
-                return redirect('uploaded_page')  # 'uploaded_page' is the name of the URL pattern for the uploaded page
+                return irect('uploaded_page')  # 'uploaded_page' is the name of the URL pattern for the uploaded page
             
             else:
                 return JsonResponse({'status': 'error'})
@@ -118,8 +118,8 @@ def upload_to_s3_synchronously(image_file):
     except FileNotFoundError:
         print("The file was not found")
         return False
-    except NoCredentialsError:
-        print("Credentials not available")
+    except NoCentialsError:
+        print("Centials not available")
         return False
     
 def uploaded_page(request):
@@ -196,7 +196,7 @@ def add_bounding_boxes_to_image(image, detection_results):
             width = image.width * box['Width']
             height = image.height * box['Height']
 
-            draw.rectangle([left, top, left+width, top+height], outline='red', width=3)
+            draw.rectangle([left, top, left+width, top+height], outline='blue', width=2)
     return image
 
 # Modify the detect_objects_in_image function to return the full response for processing
