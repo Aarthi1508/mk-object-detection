@@ -118,8 +118,8 @@ def upload_to_s3_synchronously(image_file):
     except FileNotFoundError:
         print("The file was not found")
         return False
-    except NoCentialsError:
-        print("Centials not available")
+    except NoCredentialsError:
+        print("Credentials not available")
         return False
     
 def uploaded_page(request):
