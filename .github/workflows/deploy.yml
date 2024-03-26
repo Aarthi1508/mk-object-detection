@@ -44,6 +44,8 @@ jobs:
         echo "AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}" >> .env
         echo "AWS_S3_BUCKET_NAME=${{ secrets.AWS_S3_BUCKET_NAME }}" >> .env
         echo "AWS_S3_REGION=${{ env.AWS_REGION }}" >> .env
+        echo "AWS_S3_UPLOADED_IMAGES_FOLDER=${{ env.AWS_S3_UPLOADED_IMAGES_FOLDER }}" >> .env
+        echo "AWS_S3_DETECTED_IMAGES_FOLDER=${{ env.AWS_S3_DETECTED_IMAGES_FOLDER }}" >> .env
         echo "MONGODB_CLIENT_URL=${{ secrets.MONGODB_CLIENT_URL }}" >> .env
         echo "MONGODB_DATABASE=${{ env.MONGODB_DATABASE }}" >> .env
         echo "MONGODB_COLLECTION=${{ env.MONGODB_COLLECTION }}" >> .env
