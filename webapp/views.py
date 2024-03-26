@@ -270,7 +270,7 @@ def detect_object(request):
             # Add bounding boxes to the image
             image_with_boxes = add_bounding_boxes_to_image(image, detection_result)
             # Construct new key for the processed image
-            processed_image_key = aws_s3_upload_folder + latest_image_key.split('/')[-1]
+            processed_image_key = aws_s3_detected_folder + '/' + latest_image_key.split('/')[-1]
             # Upload the modified image back to S3 in a different folder
             upload_image_to_s3(image_with_boxes, aws_bucket_name, processed_image_key)
             # Save detection results and processed image info to MongoDB
