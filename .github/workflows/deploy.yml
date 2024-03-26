@@ -13,7 +13,11 @@ env:
                                                     # file, e.g. .aws/task-definition.json
   ECS_TASK_DEFINITION_NAME: mk-aws-course-material-task      # ECS Task name
   CONTAINER_NAME: object-detection           # set this to the name of the container in the containerDefinitions section of your task definition
-
+  AWS_S3_UPLOADED_IMAGES_FOLDER: uploaded_images
+  AWS_S3_DETECTED_IMAGES_FOLDER: detected_images
+  MONGODB_DATABASE: aws-django-application-poc
+  MONGODB_COLLECTION: object-detection
+  
 permissions:
   contents: read
 
@@ -33,6 +37,16 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_ID }}
         aws-region: ${{ env.AWS_REGION }}
+
+    - name: Create .env file
+      run: |
+        echo "AWS_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY }}" >> .env
+        echo "AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}" >> .env
+        echo "AWS_S3_BUCKET_NAME=${{ secrets.AWS_S3_BUCKET_NAME }}" >> .env
+        echo "AWS_S3_REGION=${{ env.AWS_REGION }}" >> .env
+        echo "MONGODB_CLIENT_URL=${{ secrets.MONGODB_CLIENT_URL }}" >> .env
+        echo "MONGODB_DATABASE=${{ env.MONGODB_DATABASE }}" >> .env
+        echo "MONGODB_COLLECTION=${{ env.MONGODB_COLLECTION }}" >> .env
         
     - name: Stop the running ECS task
       run: |
