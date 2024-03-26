@@ -6,7 +6,6 @@ import boto3
 from botocore.exceptions import NoCredentialsError
 from django.shortcuts import render, redirect
 from .forms import ImageUploadForm
-from .models import UploadedImage
 import os 
 import subprocess
 from pathlib import Path
@@ -15,7 +14,7 @@ import uuid
 import json
 from pymongo import MongoClient
 import pymongo
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 import io
 from datetime import datetime
 
@@ -184,6 +183,9 @@ def upload_image_to_s3(img, bucket, key):
 
 def add_bounding_boxes_to_image(image, detection_results):
     draw = ImageDraw.Draw(image)
+    font_size = 12  # Specify the desired font size
+    font = ImageFont.truetype("arialbd.ttf", font_size)  # Load a bold version of Arial font
+
     # Loop through each detection in the results
     for detection in detection_results['Labels']:
         for instance in detection['Instances']:
@@ -192,8 +194,21 @@ def add_bounding_boxes_to_image(image, detection_results):
             top = image.height * box['Top']
             width = image.width * box['Width']
             height = image.height * box['Height']
+            confidence = instance['Confidence']
 
-            draw.rectangle([left, top, left+width, top+height], outline='red', width=3)
+            # Draw bounding box
+            draw.rectangle([left, top, left+width, top+height], outline='blue', width=2)
+
+            # Add confidence level text on top of bounding box
+            text = f"{detection['Name']} - {confidence:.2f}%"
+            text_width, text_height = draw.textsize(text, font=font)
+            
+            # Calculate the position to center the text horizontally above the bounding box
+            text_left = left + (width - text_width) / 2
+            text_top = top - text_height
+
+            draw.text((text_left, text_top), text, fill='red', font=font)
+
     return image
 
 # Modify the detect_objects_in_image function to return the full response for processing
