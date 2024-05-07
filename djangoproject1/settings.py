@@ -118,13 +118,17 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'webapp/static')]
+# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'webapp/static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'webapp', 'static')
+
+
 
 # URL prefix for user-uploaded files.
 MEDIA_URL = '/'
 
 # Directory where Django will store user-uploaded files.
 MEDIA_ROOT = os.path.join(BASE_DIR)
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

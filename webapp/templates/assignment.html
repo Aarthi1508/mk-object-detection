@@ -8,20 +8,48 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Assignment page</title>
     <style>
-        img {
-            position:absolute;
-            left:0;
-            right:0;
-            margin:auto;
-            height: 500px;
-            width: 500px;
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* Display 2 columns */
+            grid-template-rows: repeat(2, 1fr); /* Display 2 rows */
+            gap: 10px;
+        }
+
+        .image-grid img {
+            width: 100%; /* Set the width to 100% to fill the grid cell */
+            height: 300px; /* Set a fixed height for all images */
+            object-fit: cover; /* Crop the image to fill the container while maintaining aspect ratio */
         }
     </style>
   </head>
   <body>
-    <h1 style="text-align: center;"> Hello World! </h1>
+    <h1 style="text-align: center;"> S&CC Project </h1>
     <script src="index.js"></script>
-    <img src="{% static 'images/construction/1.jpeg' %}">
-   
+    <!-- <img src="{% static 'images/construction/1.jpeg' %}"> -->
+
+    <div class="image-grid">
+        <!-- JavaScript will populate this div with images -->
+    </div>
+
+    <script>
+        // JavaScript to fetch images from Django view and display them
+        window.onload = function() {
+            fetchImages();
+        };
+
+        async function fetchImages() {
+    const response = await fetch('/get_images/'); // URL to Django view
+    const images = await response.json();
+
+    const imageGrid = document.querySelector('.image-grid');
+        images.forEach(image => {
+            const imgElement = document.createElement('img');
+            imgElement.src = image.url;
+            imgElement.alt = image.alt;
+            imageGrid.appendChild(imgElement);
+        });
+    }
+        
+    </script>
   </body>
 </html>

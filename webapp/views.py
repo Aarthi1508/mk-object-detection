@@ -17,6 +17,8 @@ import pymongo
 from PIL import Image, ImageDraw, ImageFont
 import io
 from datetime import datetime
+from django.conf import settings
+
 
 # Load environment variables from .env
 load_dotenv()
@@ -320,3 +322,27 @@ def image_details_popup(request):
 
 def assignment_view(request):
     return render(request, 'assignment.html')
+
+# def get_images(request):
+#     images = []
+#     image_dir = os.path.join(settings.BASE_DIR, 'webapp', 'static', 'images', 'construction')
+
+#     for filename in os.listdir(image_dir):
+#         if filename.endswith('.jpeg') or filename.endswith('.jpg') or filename.endswith('.png'):
+#             image_path = os.path.join('static', 'images', 'construction', filename)
+#             alt_text = filename.split('.')[0]  # Use filename as alt text (without extension)
+#             images.append({'url': image_path, 'alt': alt_text})
+
+#     return JsonResponse(images, safe=False)
+
+def get_images(request):
+    images = []
+    image_dir = os.path.join(settings.STATIC_ROOT, 'images', 'construction')
+
+    for filename in os.listdir(image_dir):
+        if filename.endswith('.jpeg') or filename.endswith('.jpg') or filename.endswith('.png'):
+            image_path = os.path.join(settings.STATIC_URL, 'images', 'construction', filename)
+            alt_text = filename.split('.')[0]  # Use filename as alt text (without extension)
+            images.append({'url': image_path, 'alt': alt_text})
+
+    return JsonResponse(images, safe=False)
