@@ -317,3 +317,6 @@ def detected_image_page(request):
 def image_details_popup(request):
     latest_mongo_db_record = get_latest_record_from_mongodb()
     return render(request, 'popup_content.html', {'latest_mongo_db_record': latest_mongo_db_record})
+
+def assignment_view(request):
+    return render(request, 'assignment.html')

@@ -37,6 +37,7 @@
                 {{ form.image }}
                 <br>
                 <button type="button" onclick="uploadToS3()">Upload</button>
+                <button type="button" id="assignmentButton">Assignment</button>
             </form>
 
         </div>
@@ -63,6 +64,9 @@
                         }
                     });
                 }
+                document.getElementById("assignmentButton").addEventListener("click", function() {
+                    window.location.href = "{% url 'assignment' %}";
+                });
             </script>
 </body>
 
